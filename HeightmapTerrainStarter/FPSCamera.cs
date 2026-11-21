@@ -33,6 +33,8 @@ namespace HeightmapTerrainStarter
 
         public Matrix Projection { get; protected set; }
 
+        public IHeightMap HeightMap { get; set; }
+
         /// <summary>
         /// Updates the camera
         /// </summary>
@@ -61,6 +63,11 @@ namespace HeightmapTerrainStarter
 
             // determine the direction the camera faces
             var direction = Vector3.Transform(Vector3.Forward, Matrix.CreateRotationX(verticalAngle) * Matrix.CreateRotationY(horizontalAngle));
+
+            if (HeightMap != null)
+            {
+                position.Y = HeightMap.GetHeightAt(position.X, position.Z) + HeightOffset;
+            }
 
             // create the veiw matrix
             View = Matrix.CreateLookAt(position, position + direction, Vector3.Up);
